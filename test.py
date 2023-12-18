@@ -1,7 +1,12 @@
+# Libraries import
+
 import pygame
 from pygame.locals import *
 from OpenGL.GL import *
 from OpenGL.GLU import *
+
+
+# Vertices and edges definition
 
 verticies = (
     (1, -1, -1),
@@ -30,6 +35,8 @@ edges = (
     )
 
 
+# Cube drawing function
+
 def Cube():
     glBegin(GL_LINES)
     for edge in edges:
@@ -40,7 +47,7 @@ def Cube():
 
 def main():
     pygame.init()
-    display = (800,600)
+    display = (135,240)
     pygame.display.set_mode(display, DOUBLEBUF|OPENGL)
 
     gluPerspective(45, (display[0]/display[1]), 0.1, 50.0)
