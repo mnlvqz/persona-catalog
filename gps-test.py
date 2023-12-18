@@ -19,9 +19,10 @@ try:
     while True:
         data = read_bit(RX_PIN)
         print(data)
-        time.sleep(0.01)
-
+        time.sleep(0.5)
+        """
         write_bit(TX_PIN, 1)
         time.sleep(0.01)
+        """
 except KeyboardInterrupt:
     pi.stop()
