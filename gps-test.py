@@ -1,28 +1,20 @@
+import pigpio
 import time
-import serial
-import RPi.GPIO as GPIO
 
-# Serial GPIO pins
 TX_PIN = 26
 RX_PIN = 13
 
-# GPIO configuration
-GPIO.setmode(GPIO.BCM)
-GPIO.setup(TX_PIN, GPIO.OUT)
-GPIO.setup(RX_PIN, GPIO.IN)
+pi = pigpio.pi()
 
-ser = serial.Serial(
-    port='/dev/serial0',  
-    baudrate=9600, 
-)
-
-def read_serial():
-    while True:
-        if GPIO.input(RX_PIN):
-            line = ser.readline().decode('utf-8').rstrip()
-            print(line)
+serial_port = pi.serial_open("/dev/ttyS0", 9600, rxpin=RX_PIN, txpin=TX_PIN)
 
 try:
-    read_serial()
+    while True:
+        if pi.serial_data_available(serial_port):
+            # Leer una línea de datos
+            line = pi.serial_readline(serial_port).decode('utf-8').rstrip()
+            print(line)
+        time.sleep(0.1)
 except KeyboardInterrupt:
-    GPIO.cleanup()
+    pi.serial_close(serial_port)  # Cerrar el puerto serial
+    pi.stop()
